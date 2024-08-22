@@ -1,14 +1,14 @@
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { IP_ADDRESS } from './env';
+import {IP_ADDRESS} from './env';
 
 const App = () => {
   const [todos, setTodos] = useState([]);
   fetchData = async () => {
     try {
       const response = await axios.get(`${IP_ADDRESS}/api`);
-      console.log(new Date().toLocaleTimeString(),' ',response.data);
+      console.log(new Date().toLocaleTimeString(), ' ', response.data);
       setTodos(response.data);
     } catch (error) {
       console.error('Error fetching data: ', error);
@@ -29,12 +29,11 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log('fetching data');
     fetchData();
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Applet</Text>
       {todos && todos.length > 0 && (
         <Text>Congratulations..., you are successfully fetching data</Text>
@@ -50,3 +49,7 @@ const App = () => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  container: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+});
