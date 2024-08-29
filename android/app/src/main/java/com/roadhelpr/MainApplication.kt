@@ -1,4 +1,4 @@
-package com.trelpo_frontend
+package com.roadhelpr
 
 import android.app.Application
 import com.facebook.react.PackageList

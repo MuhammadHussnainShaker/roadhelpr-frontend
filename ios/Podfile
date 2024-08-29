@@ -14,7 +14,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'trelpo_frontend' do
+target 'roadhelpr' do
   config = use_native_modules!
 
   use_react_native!(
@@ -23,7 +23,7 @@ target 'trelpo_frontend' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'trelpo_frontendTests' do
+  target 'roadhelprTests' do
     inherit! :complete
     # Pods for testing
   end
