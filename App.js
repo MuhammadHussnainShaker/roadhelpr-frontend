@@ -1,10 +1,16 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {IP_ADDRESS} from './env';
+import {IP_ADDRESS} from './Constants';
 
 const App = () => {
   const [todos, setTodos] = useState([]);
+  const [count, setCount] = useState(1);
+
+  function incrementCount() {
+    setCount(count + 1);
+  }
+
   fetchData = async () => {
     try {
       const response = await axios.get(`${IP_ADDRESS}/api`);
@@ -30,13 +36,16 @@ const App = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [count]);
 
   return (
     <View style={styles.container}>
       <Text>Applet</Text>
       {todos && todos.length > 0 && (
-        <Text>Congratulations..., you are successfully fetching data</Text>
+        <Text>
+          Congratulations..., you are successfully fetching data at{' '}
+          {new Date().toLocaleTimeString()}
+        </Text>
       )}
       {todos.map((todo, index) => (
         <View key={index}>
@@ -44,6 +53,7 @@ const App = () => {
           <Text>{todo.id}</Text>
         </View>
       ))}
+      <TouchableOpacity onPress={incrementCount}><Text>Refetch Data</Text></TouchableOpacity>
     </View>
   );
 };
