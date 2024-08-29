@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "trelpo_frontend.app"
-               BlueprintName = "trelpo_frontend"
-               ReferencedContainer = "container:trelpo_frontend.xcodeproj">
+               BuildableName = "roadhelpr.app"
+               BlueprintName = "roadhelpr"
+               ReferencedContainer = "container:roadhelpr.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "trelpo_frontendTests.xctest"
-               BlueprintName = "trelpo_frontendTests"
-               ReferencedContainer = "container:trelpo_frontend.xcodeproj">
+               BuildableName = "roadhelprTests.xctest"
+               BlueprintName = "roadhelprTests"
+               ReferencedContainer = "container:roadhelpr.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "trelpo_frontend.app"
-            BlueprintName = "trelpo_frontend"
-            ReferencedContainer = "container:trelpo_frontend.xcodeproj">
+            BuildableName = "roadhelpr.app"
+            BlueprintName = "roadhelpr"
+            ReferencedContainer = "container:roadhelpr.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "trelpo_frontend.app"
-            BlueprintName = "trelpo_frontend"
-            ReferencedContainer = "container:trelpo_frontend.xcodeproj">
+            BuildableName = "roadhelpr.app"
+            BlueprintName = "roadhelpr"
+            ReferencedContainer = "container:roadhelpr.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

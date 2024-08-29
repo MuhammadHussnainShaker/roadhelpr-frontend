@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface trelpo_frontendTests : XCTestCase
+@interface roadhelprTests : XCTestCase
 
 @end
 
-@implementation trelpo_frontendTests
+@implementation roadhelprTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
