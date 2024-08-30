@@ -35,7 +35,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Text>RoadHelpr</Text>
+      <Text>RoadHelpr Sub-Main</Text>
       {todos && todos.length > 0 && (
         <Text>
           Congratulations..., you are successfully fetched data at{' '}
