@@ -38,7 +38,7 @@ const App = () => {
       <Text>RoadHelpr</Text>
       {todos && todos.length > 0 && (
         <Text>
-          Congratulations..., you are successfully fetched data at{' '}
+          Congratulations..., you are successfully fetcheed data at{' '}
           {new Date().toLocaleTimeString()}
         </Text>
       )}
