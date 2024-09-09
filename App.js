@@ -6,40 +6,53 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    Modal,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import { IP_ADDRESS } from './Constants.js'
+import AddImage from './src/assets/images/add-a-photo.svg'
 
 const App = () => {
-    const [todos, setTodos] = useState([])
     const [fullName, setFullName] = useState('')
-    const [username, setUsername] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [profileImageUrl, setProfileImageUrl] = useState('')
+    const [isModalVisible, setIsModalVisible] = useState(false)
 
     const submitUserData = async () => {
-        const user = {
-            fullName: fullName,
-            email: email,
-            password: password,
-            username: username,
+
+        const formData = new FormData()
+        formData.append('fullName', fullName)
+        formData.append('phoneNumber', phoneNumber)
+        formData.append('email', email)
+        formData.append('password', password)
+        if (profileImageUrl) {
+            console.log(profileImageUrl)
+            formData.append('profileImageUrl', {
+                uri: profileImageUrl,
+                name: 'profile.jpg',
+                type: 'image/jpeg'
+            })
         }
+        console.log(formData)
 
         try {
             const response = await axios.post(
                 `${IP_ADDRESS}/api/v1/users/register`,
-                user,
+                formData,
                 {
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data',
                         'Accept': 'application/json',
                     },
                     timeout: 10000,
                 }
             )
 
-            console.log('User Registered Successfully ', response)
+            console.log('User Registered Successfully ', response.data)
             return response.data
         } catch (error) {
             if (error.response) {
@@ -57,7 +70,6 @@ const App = () => {
         try {
             const response = await axios.get(`${IP_ADDRESS}/api`)
             console.log(new Date().toLocaleTimeString(), ' ', response.data)
-            setTodos(response.data)
         } catch (error) {
             console.error('Error fetching data: ', error)
             if (error.response) {
@@ -80,10 +92,92 @@ const App = () => {
         fetchData()
     }, [])
 
+    const imagePickerOptions = {
+        mediaType: 'photo',
+        includeBase64: false,
+    }
+
+    const openCamera = () => {
+        setIsModalVisible(false)
+        launchCamera(imagePickerOptions, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled camera picker')
+            } else if (response.errorCode) {
+                console.log(
+                    'ImagePicker Error: ',
+                    response.errorCode,
+                    'Error Message: ',
+                    response.errorMessage,
+                )
+            } else {
+                console.log('Photo: ', response.assets[0].uri)
+                const selectedImage = response.assets[0]
+                setProfileImageUrl(selectedImage.uri)
+                console.log(profileImageUrl)
+            }
+        })
+    }
+
+    const openGallery = () => {
+        setIsModalVisible(false)
+        launchImageLibrary(imagePickerOptions, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled gallery picker')
+            } else if (response.errorCode) {
+                console.log(
+                    'ImagePicker Error: ',
+                    response.errorCode,
+                    'Error Message: ',
+                    response.errorMessage,
+                )
+            } else {
+                console.log('Photo: ', response.assets[0].uri)
+                const selectedImage = response.assets[0]
+                setProfileImageUrl(selectedImage.uri)
+                console.log(profileImageUrl)
+            }
+        })
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
                 <Text style={styles.heading}>Sign up</Text>
+                <TouchableOpacity
+                    style={styles.imagePickerBtn}
+                    onPress={() => setIsModalVisible(true)}
+                >
+                    {profileImageUrl ? (
+                        <Image
+                            source={{ uri: profileImageUrl }}
+                            style={styles.imagePickerBtnImg}
+                            // resizeMode="cover"
+                        />
+                    ) : (
+                        <AddImage width={40} height={40} />
+                    )}
+                </TouchableOpacity>
+                <Modal
+                    animationType="slide"
+                    visible={isModalVisible}
+                    onRequestClose={() => setIsModalVisible(false)}
+                    // transparent={true}
+                >
+                    <View style={styles.modalContainer}>
+                        <TouchableOpacity
+                            style={styles.openCameraBtn}
+                            onPress={openCamera}
+                        >
+                            <Text>Open Camera</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.openGalleryBtn}
+                            onPress={openGallery}
+                        >
+                            <Text>Open Gallery e</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
                 <TextInput
                     style={styles.fullnameInput}
                     placeholder="Full Name"
@@ -92,9 +186,9 @@ const App = () => {
                 />
                 <TextInput
                     style={styles.usernameInput}
-                    placeholder="User Name"
+                    placeholder="Phone Number"
                     placeholderTextColor="#B0B0B0"
-                    onChangeText={(text) => setUsername(text)}
+                    onChangeText={(text) => setPhoneNumber(text)}
                 />
                 <TextInput
                     style={styles.emailInput}
@@ -108,12 +202,14 @@ const App = () => {
                     placeholderTextColor="#B0B0B0"
                     onChangeText={(text) => setPassword(text)}
                 />
+
                 <TouchableOpacity
                     style={styles.continueBtn}
                     onPress={submitUserData}
                 >
                     <Text style={styles.continueBtnTxt}>Continue</Text>
                 </TouchableOpacity>
+
                 <View style={styles.loginLink}>
                     <Text style={styles.loginTxt}>
                         Already have an account?
@@ -196,5 +292,42 @@ const styles = StyleSheet.create({
     },
     loginBtnTxt: {
         color: '#4CAF50',
+    },
+    imagePickerBtn: {
+        marginTop: 24,
+        alignSelf:'center',
+        backgroundColor: '#1A5319',
+        // padding: 12,
+        justifyContent:'center',
+        alignItems: 'center',
+        width:'25%',
+        height:'15%',
+        borderRadius:50,
+        overflow:'hidden',
+    },
+    imagePickerBtnImg: {
+        width:'100%',
+        height:'100%',
+        // borderRadius: 50,
+        // resizeMode:'cover',
+    },
+    modalContainer:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'space-evenly',
+        alignItems:'flex-end',
+        paddingBottom: 24,
+    },
+    openCameraBtn: {
+        marginTop: 24,
+        backgroundColor: '#1A5319',
+        padding: 12,
+        alignItems: 'center',
+    },
+    openGalleryBtn: {
+        marginTop: 24,
+        backgroundColor: '#1A5319',
+        padding: 12,
+        alignItems: 'center',
     },
 })
