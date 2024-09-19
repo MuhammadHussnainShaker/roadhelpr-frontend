@@ -1,6 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
+import AppButton from '../components/AppButton'
+import { COLORS } from '../constants/colors'
+import { LAYOUT } from '../constants/layout'
+import { Icons } from '../constants/icons'
 
 const Welcome = () => {
     const navigation = useNavigation()
@@ -14,14 +18,12 @@ const Welcome = () => {
     }
 
     return (
-        <View>
-            <Text>Welcome</Text>
-            <TouchableOpacity style={styles.continueBtn} onPress={goToSignup}>
-                <Text style={styles.continueBtnTxt}>Signup</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.continueBtn} onPress={goToLogin}>
-                <Text style={styles.continueBtnTxt}>Login</Text>
-            </TouchableOpacity>
+        <View style={styles.container}>
+            <View style={styles.logo}>
+                <Icons.Logo width={250} height={250} />
+            </View>
+            <AppButton title="Signup" onPress={goToSignup} />
+            <AppButton title="Login" onPress={goToLogin} />
         </View>
     )
 }
@@ -29,14 +31,15 @@ const Welcome = () => {
 export default Welcome
 
 const styles = StyleSheet.create({
-    continueBtn: {
-        marginTop: 24,
-        backgroundColor: '#1A5319',
-        padding: 12,
-        alignItems: 'center',
+    container: {
+        backgroundColor: COLORS.primaryBackground,
+        flex: 1,
+        justifyContent: 'center',
+        paddingLeft: LAYOUT.paddingSmall,
+        paddingRight: LAYOUT.paddingSmall,
     },
-    continueBtnTxt: {
-        color: '#E0E0E0',
-        width: '18%',
+    logo: {
+        alignSelf: 'center',
+        marginBottom: LAYOUT.marginLarge,
     },
 })

@@ -1,12 +1,90 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, StyleSheet, Text } from 'react-native'
+import React, { useState } from 'react'
+import { COLORS } from '../constants/colors'
+import AppButton from '../components/AppButton'
+import { LAYOUT } from '../constants/layout'
+import CustomTextInput from '../components/CustomTextInput'
+import { Icons } from '../constants/icons'
+import axios from 'axios'
+import { IP_ADDRESS } from '../constants/Constants'
+import { useDispatch } from 'react-redux'
+import { storeTokens } from '../store/slices/authSlice'
+import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const submitLoginData = async () => {
+        const userData = {
+            email,
+            phoneNumber,
+            password,
+        }
+
+        try {
+            const response = await axios.post(
+                `${IP_ADDRESS}/api/v1/users/login`,
+                userData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    timeout: 10000,
+                },
+            )
+
+            console.log('User Logged In Successfully ', response.data.data)
+
+            const { accessToken, refreshToken } = response.data.data
+            dispatch(storeTokens(accessToken, refreshToken))
+
+            navigation.replace('Home')
+
+            return response.data
+        } catch (error) {
+            if (error.response) {
+                console.error(
+                    'Registration failed, Status: ',
+                    error.response.status,
+                    'Response: ',
+                    error.response.data,
+                )
+            } else if (error.request) {
+                console.error('No response from server: ', error.request)
+            } else {
+                console.error('Error setting up the request: ', error.message)
+            }
+            throw error
+        }
+    }
     return (
-        <View>
-            <TouchableOpacity style={styles.continueBtn}>
-                <Text style={styles.continueBtnTxt}>Login</Text>
-            </TouchableOpacity>
+        <View style={styles.container}>
+            <View style={styles.subContainer}>
+                <View style={styles.logo}>
+                    <Icons.Logo width={250} height={250} />
+                </View>
+                <Text style={styles.heading}>Log in</Text>
+                <CustomTextInput
+                    placeholder="Email Address"
+                    onChangeText={(text) => setEmail(text)}
+                />
+                <CustomTextInput
+                    placeholder="Phone Number"
+                    onChangeText={(text) => setPhoneNumber(text)}
+                />
+                <CustomTextInput
+                    placeholder="Password"
+                    onChangeText={(text) => {
+                        setPassword(text)
+                    }}
+                />
+                <AppButton title="Login" onPress={submitLoginData} />
+            </View>
         </View>
     )
 }
@@ -14,14 +92,22 @@ const Login = () => {
 export default Login
 
 const styles = StyleSheet.create({
-    continueBtn: {
-        marginTop: 24,
-        backgroundColor: '#1A5319',
-        padding: 12,
-        alignItems: 'center',
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.primaryBackground,
+        justifyContent: 'flex-end',
     },
-    continueBtnTxt: {
-        color: '#E0E0E0',
-        width: '18%',
+    subContainer: {
+        paddingLeft: LAYOUT.paddingMedium,
+        paddingRight: LAYOUT.paddingMedium,
+        paddingBottom: LAYOUT.paddingLarge,
+    },
+    heading: {
+        fontSize: LAYOUT.fontSizeExtraLarge,
+        color: COLORS.primary,
+    },
+    logo: {
+        alignSelf: 'center',
+        marginBottom: LAYOUT.marginLarge,
     },
 })

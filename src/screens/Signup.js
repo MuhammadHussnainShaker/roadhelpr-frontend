@@ -1,5 +1,4 @@
 import {
-    Button,
     Image,
     StyleSheet,
     Text,
@@ -7,13 +6,20 @@ import {
     TouchableOpacity,
     View,
     Modal,
-    ActivityIndicator,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useNavigation } from '@react-navigation/native'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { IP_ADDRESS } from '../constants/Constants'
-import AddImage from '../assets/images/add-a-photo.svg'
+// import AddImage from '../../assets/icons/photoIcon.svg'
+import { Icons } from '../constants/icons'
+import AppButton from '../components/AppButton'
+import TextButton from '../components/TextButton'
+import CustomTextInput from '../components/CustomTextInput'
+import { COLORS } from '../constants/colors'
+import { LAYOUT } from '../constants/layout'
+import CustomModal from '../components/CustomModal'
 
 const Signup = () => {
     const [fullName, setFullName] = useState('')
@@ -22,6 +28,8 @@ const Signup = () => {
     const [password, setPassword] = useState('')
     const [profileImageUrl, setProfileImageUrl] = useState('')
     const [isModalVisible, setIsModalVisible] = useState(false)
+
+    const navigation = useNavigation()
 
     const submitUserData = async () => {
         const formData = new FormData()
@@ -159,70 +167,57 @@ const Signup = () => {
                             // resizeMode="cover"
                         />
                     ) : (
-                        <AddImage width={40} height={40} />
+                        <Icons.PhotoIcon width={40} height={40} />
                     )}
                 </TouchableOpacity>
-                <Modal
-                    animationType="slide"
+                <CustomModal
                     visible={isModalVisible}
                     onRequestClose={() => setIsModalVisible(false)}
-                    // transparent={true}
                 >
-                    <View style={styles.modalContainer}>
-                        <TouchableOpacity
-                            style={styles.openCameraBtn}
-                            onPress={openCamera}
-                        >
-                            <Text>Open Camera</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.openGalleryBtn}
+                    <View>
+                        <AppButton title={'Open Camera'} onPress={openCamera} />
+                        <AppButton
+                            title={'Open Gallery'}
                             onPress={openGallery}
-                        >
-                            <Text>Open Gallery e</Text>
-                        </TouchableOpacity>
+                        />
+                        <AppButton
+                            title={'Cancel'}
+                            onPress={() => setIsModalVisible(false)}
+                            style={styles.modalCancelBtn}
+                            backgroundColor={COLORS.error}
+                        />
                     </View>
-                </Modal>
-                <TextInput
-                    style={styles.fullnameInput}
+                </CustomModal>
+                <CustomTextInput
                     placeholder="Full Name"
-                    placeholderTextColor="#B0B0B0"
                     onChangeText={(text) => setFullName(text)}
                 />
-                <TextInput
-                    style={styles.usernameInput}
+                <CustomTextInput
                     placeholder="Phone Number"
-                    placeholderTextColor="#B0B0B0"
                     onChangeText={(text) => setPhoneNumber(text)}
                 />
-                <TextInput
-                    style={styles.emailInput}
+                <CustomTextInput
                     placeholder="Email Address"
-                    placeholderTextColor="#B0B0B0"
                     onChangeText={(text) => setEmail(text)}
                 />
-                <TextInput
-                    style={styles.pwInput}
+                <CustomTextInput
                     placeholder="Password"
-                    placeholderTextColor="#B0B0B0"
-                    onChangeText={(text) => setPassword(text)}
+                    onChangeText={(text) => {
+                        setPassword(text)
+                    }}
                 />
 
-                <TouchableOpacity
-                    style={styles.continueBtn}
-                    onPress={submitUserData}
-                >
-                    <Text style={styles.continueBtnTxt}>Continue</Text>
-                </TouchableOpacity>
+                <AppButton title="Continue" onPress={submitUserData} />
 
-                <View style={styles.loginLink}>
+                <TouchableOpacity
+                    style={styles.loginLink}
+                    onPress={() => navigation.navigate('Login')}
+                >
                     <Text style={styles.loginTxt}>
                         Already have an account?
                     </Text>
-                    <TouchableOpacity style={styles.loginBtn}>
-                        <Text style={styles.loginBtnTxt}>Log in</Text>
-                    </TouchableOpacity>
-                </View>
+                    <TextButton title="Login" />
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -233,58 +228,51 @@ export default Signup
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#121212',
-        // backgroundColor: '#878276',
-        backgroundColor: '#373747',
-        // alignItems: 'center',
+        backgroundColor: COLORS.primaryBackground,
         justifyContent: 'flex-end',
     },
     subContainer: {
-        // width: '94%',
-        paddingLeft: 16,
-        paddingRight: 16,
-        // paddingTop: 16,
-        paddingBottom: 28,
+        paddingLeft: LAYOUT.paddingMedium,
+        paddingRight: LAYOUT.paddingMedium,
     },
     heading: {
-        fontSize: 28,
-        fontWeight: '600',
-        color: '#E0E0E0',
+        fontSize: LAYOUT.fontSizeExtraLarge,
+        color: COLORS.primary,
     },
-    fullnameInput: {
-        marginTop: 24,
-        borderBottomWidth: 1,
-        borderColor: '#2C2C2C',
-        fontWeight: '600',
-    },
-    usernameInput: {
-        marginTop: 24,
-        borderBottomWidth: 1,
-        borderColor: '#2C2C2C',
-        fontWeight: '600',
-    },
-    emailInput: {
-        marginTop: 12,
-        borderBottomWidth: 1,
-        borderColor: '#2C2C2C',
-        fontWeight: '600',
-    },
-    pwInput: {
-        marginTop: 12,
-        borderBottomWidth: 1,
-        borderColor: '#2C2C2C',
-        fontWeight: '600',
-    },
-    continueBtn: {
-        marginTop: 24,
-        backgroundColor: '#1A5319',
-        padding: 12,
-        alignItems: 'center',
-    },
-    continueBtnTxt: {
-        color: '#E0E0E0',
-        width: '18%', // ASK
-    },
+    // fullnameInput: {
+    //     marginTop: 24,
+    //     borderBottomWidth: 1,
+    //     borderColor: '#2C2C2C',
+    //     fontWeight: '600',
+    // },
+    // usernameInput: {
+    //     marginTop: 24,
+    //     borderBottomWidth: 1,
+    //     borderColor: '#2C2C2C',
+    //     fontWeight: '600',
+    // },
+    // emailInput: {
+    //     marginTop: 12,
+    //     borderBottomWidth: 1,
+    //     borderColor: '#2C2C2C',
+    //     fontWeight: '600',
+    // },
+    // pwInput: {
+    //     marginTop: 12,
+    //     borderBottomWidth: 1,
+    //     borderColor: '#2C2C2C',
+    //     fontWeight: '600',
+    // },
+    // continueBtn: {
+    //     marginTop: 24,
+    //     backgroundColor: '#1A5319',
+    //     padding: 12,
+    //     alignItems: 'center',
+    // },
+    // continueBtnTxt: {
+    //     color: '#E0E0E0',
+    //     width: '18%', // ASK
+    // },
 
     loginLink: {
         marginTop: 24,
@@ -292,47 +280,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     loginTxt: {
-        color: '#E0E0E0',
-        width: '48%', // ASK
-    },
-    loginBtnTxt: {
-        color: '#4CAF50',
+        color: COLORS.textPrimary,
     },
     imagePickerBtn: {
-        marginTop: 24,
+        marginTop: LAYOUT.marginMedium,
         alignSelf: 'center',
-        backgroundColor: '#1A5319',
-        // padding: 12,
+        backgroundColor: COLORS.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        width: '25%',
-        height: '15%',
-        borderRadius: 50,
+        width: '26%',
+        height: '16%',
+        borderRadius: LAYOUT.borderRadiusRounded,
         overflow: 'hidden',
     },
     imagePickerBtnImg: {
         width: '100%',
         height: '100%',
-        // borderRadius: 50,
-        // resizeMode:'cover',
-    },
-    modalContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'flex-end',
-        paddingBottom: 24,
-    },
-    openCameraBtn: {
-        marginTop: 24,
-        backgroundColor: '#1A5319',
-        padding: 12,
-        alignItems: 'center',
-    },
-    openGalleryBtn: {
-        marginTop: 24,
-        backgroundColor: '#1A5319',
-        padding: 12,
-        alignItems: 'center',
     },
 })
