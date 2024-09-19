@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Show current location on map.</string>
+	<string>We need your location to show it on the map.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to show it on the map even when the app is in the background.</string>
 	<key>MBXAccessToken</key>
 	<string>pk.eyJ1IjoibXVoYW1tYWRodXNzbmFpbnNoYWtlciIsImEiOiJjbTE4dm50YmoxM3d6MmpzOGo3M293enRzIn0.Fa4g2b1_HiklPF4shDnmpQ</string>
 	<key>CFBundleDevelopmentRegion</key>
