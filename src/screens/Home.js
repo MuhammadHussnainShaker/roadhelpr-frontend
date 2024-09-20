@@ -1,13 +1,37 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { FONTFAMILY } from '../constants/fontfamily'
 import { COLORS } from '../constants/colors'
-import { Icons } from '../constants/icons'
-import MapScreen from '../components/MapScreen'
+import MapScreen from '../components/MapView'
+import AppButton from '../components/AppButton'
+import { useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 
 const Home = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    const accessToken = useSelector((state) => state.auth?.accessToken)
+
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        if (accessToken) {
+            setIsLoggedIn(true)
+            console.log('isLoggedIn: ', isLoggedIn)
+        } else {
+            setIsLoggedIn(false)
+        }
+    }, [accessToken])
+
     return (
         <View style={styles.container}>
+            {!isLoggedIn && (
+                <View style={styles.loginBtn}>
+                    <AppButton
+                        title={'Login'}
+                        onPress={() => navigation.navigate('Login')}
+                    />
+                </View>
+            )}
             <MapScreen />
         </View>
     )
@@ -20,8 +44,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.primaryBackground,
     },
-    classicText: {
-        fontFamily: FONTFAMILY.firaLight,
-        color: '#000000',
+    loginBtn: {
+        position: 'absolute',
+        zIndex: 1,
+        top: '-1%',
+        left: '70%',
+        width: '25%',
     },
 })

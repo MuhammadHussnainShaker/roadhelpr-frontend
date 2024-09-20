@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Alert, ActivityIndicator } from 'react-native'
 import MapboxGL from '@rnmapbox/maps'
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions'
+import { COLORS } from '../constants/colors'
 
 MapboxGL.setAccessToken(
     'pk.eyJ1IjoibXVoYW1tYWRodXNzbmFpbnNoYWtlciIsImEiOiJjbTE4dm50YmoxM3d6MmpzOGo3M293enRzIn0.Fa4g2b1_HiklPF4shDnmpQ',
 )
 
-const MapScreen = () => {
+const MapView = () => {
     const [userLocation, setUserLocation] = useState(null)
     const [hasLocationPermission, setHasLocationPermission] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -28,7 +29,8 @@ const MapScreen = () => {
             const result = await check(permission)
 
             if (result === RESULTS.DENIED) {
-                // Request permission if denied
+                // why we simple did not compare result with 'denied' string
+                // coz if library changes the underlying implementation code will still work
                 const requestResult = await request(permission)
                 setHasLocationPermission(requestResult === RESULTS.GRANTED)
             } else {
@@ -45,7 +47,7 @@ const MapScreen = () => {
         // Show a loading indicator while checking permissions
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#0000ff" />
+                <ActivityIndicator size="large" color={COLORS.primary} />
             </View>
         )
     }
@@ -60,52 +62,54 @@ const MapScreen = () => {
     }
 
     const defaultCamera = {
-        centerCoordinate: [12.338, 45.4385],
-        zoomLevel: 17.4,
+        centerCoordinate: userLocation
+            ? [userLocation.longitude, userLocation.latitude]
+            : [69.3451, 30.3753],
+        zoomLevel: 10,
     }
 
     return (
-        <View style={styles.container}>
-            <MapboxGL.MapView style={styles.map}>
-                <MapboxGL.Camera
-                    // zoomLevel={10}
-                    // defaultSettings={defaultCamera}
-                    followUserLocation={true}
-                    followZoomLevel={14.4}
-                    // centerCoordinate={
-                    //     userLocation
-                    //         ? [userLocation.longitude, userLocation.latitude]
-                    //         : [-122.4194, 37.7749]
-                    // }
-                />
-                <MapboxGL.UserLocation
-                    onUpdate={onUserLocationUpdate}
-                    visible={true}
-                />
-                <MapboxGL.PointAnnotation
+        <MapboxGL.MapView style={styles.map}>
+            <MapboxGL.Camera
+                defaultSettings={defaultCamera}
+                followUserLocation={true}
+                followZoomLevel={14.4}
+            />
+            <MapboxGL.UserLocation
+                onUpdate={onUserLocationUpdate}
+                visible={true}
+                minDisplacement={3} // min distance in meters between updates
+                showsUserHeadingIndicator={true}
+                androidRenderMode="gps"
+            />
+            {/* <MapboxGL.PointAnnotation // adds marker on specified location
                     id="service-location"
-                    coordinate={[-122.4194, 37.7749]} // Example coordinate
+                    coordinate={
+                        userLocation
+                            ? [userLocation.longitude, userLocation.latitude]
+                            : [69.3451, 30.3753]
+                    }
                 >
                     <View style={styles.marker} />
-                </MapboxGL.PointAnnotation>
-            </MapboxGL.MapView>
-        </View>
+                </MapboxGL.PointAnnotation> */}
+        </MapboxGL.MapView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        zIndex: 1,
     },
     map: {
         flex: 1,
+        zIndex: 0,
     },
     marker: {
         backgroundColor: 'red',
-        width: 30,
-        height: 30,
-        borderRadius: 15,
+        width: 1,
+        height: 25,
     },
 })
 
-export default MapScreen
+export default MapView
