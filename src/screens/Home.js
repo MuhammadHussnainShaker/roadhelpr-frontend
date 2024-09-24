@@ -1,15 +1,21 @@
 import { View, StyleSheet } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { COLORS } from '../constants/colors'
-import MapScreen from '../components/MapView'
+import MapView from '../components/MapView'
 import AppButton from '../components/AppButton'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
+import BottomSheet from '../components/BottomSheet'
 
 const Home = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isSelectingLocation, setIsSelectingLocation] = useState(false)
 
-    const accessToken = useSelector((state) => state.auth?.accessToken)
+    const accessToken = useSelector((state) => state.auth?.accessTokeni)
+
+    const handlePickupLocation = useCallback(() => {
+        setIsSelectingLocation((previousValue) => !previousValue)
+    }, [])
 
     const navigation = useNavigation()
 
@@ -32,7 +38,14 @@ const Home = () => {
                     />
                 </View>
             )}
-            <MapScreen />
+            <MapView
+                isSelectingLocation={isSelectingLocation}
+                handlePickupLocation={handlePickupLocation}
+            />
+            <BottomSheet
+                isSelectingLocation={isSelectingLocation}
+                handlePickupLocation={handlePickupLocation}
+            />
         </View>
     )
 }
@@ -43,6 +56,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.primaryBackground,
+        justifyContent: 'flex-end',
     },
     loginBtn: {
         position: 'absolute',

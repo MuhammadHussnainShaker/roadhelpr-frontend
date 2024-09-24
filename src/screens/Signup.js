@@ -12,7 +12,6 @@ import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { IP_ADDRESS } from '../constants/Constants'
-// import AddImage from '../../assets/icons/photoIcon.svg'
 import { Icons } from '../constants/icons'
 import AppButton from '../components/AppButton'
 import TextButton from '../components/TextButton'
@@ -183,7 +182,6 @@ const Signup = () => {
                         <AppButton
                             title={'Cancel'}
                             onPress={() => setIsModalVisible(false)}
-                            style={styles.modalCancelBtn}
                             backgroundColor={COLORS.error}
                         />
                     </View>

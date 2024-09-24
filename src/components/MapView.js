@@ -8,7 +8,7 @@ MapboxGL.setAccessToken(
     'pk.eyJ1IjoibXVoYW1tYWRodXNzbmFpbnNoYWtlciIsImEiOiJjbTE4dm50YmoxM3d6MmpzOGo3M293enRzIn0.Fa4g2b1_HiklPF4shDnmpQ',
 )
 
-const MapView = () => {
+const MapView = ({ isSelectingLocation, handlePickupLocation }) => {
     const [userLocation, setUserLocation] = useState(null)
     const [hasLocationPermission, setHasLocationPermission] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -77,21 +77,24 @@ const MapView = () => {
             />
             <MapboxGL.UserLocation
                 onUpdate={onUserLocationUpdate}
-                visible={true}
+                visible={isSelectingLocation ? false : true}
                 minDisplacement={3} // min distance in meters between updates
                 showsUserHeadingIndicator={true}
                 androidRenderMode="gps"
             />
-            {/* <MapboxGL.PointAnnotation // adds marker on specified location
+            {isSelectingLocation && (
+                <MapboxGL.PointAnnotation // adds marker on specified location
                     id="service-location"
                     coordinate={
                         userLocation
                             ? [userLocation.longitude, userLocation.latitude]
                             : [69.3451, 30.3753]
                     }
+                    draggable={true}
                 >
                     <View style={styles.marker} />
-                </MapboxGL.PointAnnotation> */}
+                </MapboxGL.PointAnnotation>
+            )}
         </MapboxGL.MapView>
     )
 }
