@@ -20,7 +20,7 @@ const Welcome = () => {
     return (
         <View style={styles.container}>
             <View style={styles.logo}>
-                <Icons.Logo width={250} height={250} />
+                <Icons.LogoIcon width={250} height={250} />
             </View>
             <AppButton title="Signup" onPress={goToSignup} />
             <AppButton title="Login" onPress={goToLogin} />

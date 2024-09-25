@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Alert, ActivityIndicator } from 'react-native'
 import MapboxGL from '@rnmapbox/maps'
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions'
 import { COLORS } from '../constants/colors'
+import { Icons } from '../constants/icons'
 
 MapboxGL.setAccessToken(
     'pk.eyJ1IjoibXVoYW1tYWRodXNzbmFpbnNoYWtlciIsImEiOiJjbTE4dm50YmoxM3d6MmpzOGo3M293enRzIn0.Fa4g2b1_HiklPF4shDnmpQ',
 )
 
-const MapView = ({ isSelectingLocation, handlePickupLocation }) => {
+const MapView = ({ isSelectingLocation, handleSelectPickupLocation }) => {
     const [userLocation, setUserLocation] = useState(null)
     const [hasLocationPermission, setHasLocationPermission] = useState(false)
     const [loading, setLoading] = useState(true)
-
-    const onUserLocationUpdate = (location) => {
-        setUserLocation(location.coords)
-    }
+    const [pinLocation, setPinLocation] = useState([69.3451, 30.3753])
 
     useEffect(() => {
         MapboxGL.setTelemetryEnabled(false)
@@ -43,6 +41,30 @@ const MapView = ({ isSelectingLocation, handlePickupLocation }) => {
         checkPermission()
     }, [])
 
+    const onUserLocationUpdate = (location) => {
+        setUserLocation(location.coords)
+    }
+
+    const handleMapPress = (e) => {
+        const newCoords = e.geometry.coordinates
+        if (isSelectingLocation) {
+            setPinLocation(newCoords)
+        }
+    }
+
+    const handleUserLocationPress = () => {
+        if (isSelectingLocation) {
+            setPinLocation([userLocation.longitude, userLocation.latitude]) // working
+        }
+    }
+
+    const defaultCamera = {
+        centerCoordinate: userLocation
+            ? [userLocation.longitude, userLocation.latitude]
+            : [69.3451, 30.3753],
+        zoomLevel: 3,
+    }
+
     if (loading) {
         // Show a loading indicator while checking permissions
         return (
@@ -61,15 +83,8 @@ const MapView = ({ isSelectingLocation, handlePickupLocation }) => {
         return null
     }
 
-    const defaultCamera = {
-        centerCoordinate: userLocation
-            ? [userLocation.longitude, userLocation.latitude]
-            : [69.3451, 30.3753],
-        zoomLevel: 10,
-    }
-
     return (
-        <MapboxGL.MapView style={styles.map}>
+        <MapboxGL.MapView style={styles.map} onPress={handleMapPress}>
             <MapboxGL.Camera
                 defaultSettings={defaultCamera}
                 followUserLocation={true}
@@ -77,23 +92,22 @@ const MapView = ({ isSelectingLocation, handlePickupLocation }) => {
             />
             <MapboxGL.UserLocation
                 onUpdate={onUserLocationUpdate}
-                visible={isSelectingLocation ? false : true}
+                onPress
+                visible={true}
                 minDisplacement={3} // min distance in meters between updates
                 showsUserHeadingIndicator={true}
                 androidRenderMode="gps"
             />
             {isSelectingLocation && (
-                <MapboxGL.PointAnnotation // adds marker on specified location
-                    id="service-location"
-                    coordinate={
-                        userLocation
-                            ? [userLocation.longitude, userLocation.latitude]
-                            : [69.3451, 30.3753]
-                    }
+                <MapboxGL.PointAnnotation
+                    id="draggablePin"
+                    coordinate={pinLocation}
                     draggable={true}
-                >
-                    <View style={styles.marker} />
-                </MapboxGL.PointAnnotation>
+                    onDragEnd={(e) => {
+                        const newCoords = e.geometry.coordinates
+                        setPinLocation(newCoords)
+                    }}
+                />
             )}
         </MapboxGL.MapView>
     )
@@ -107,11 +121,6 @@ const styles = StyleSheet.create({
     map: {
         flex: 1,
         zIndex: 0,
-    },
-    marker: {
-        backgroundColor: 'red',
-        width: 1,
-        height: 25,
     },
 })
 

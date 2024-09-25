@@ -66,7 +66,7 @@ const Login = () => {
         <View style={styles.container}>
             <View style={styles.subContainer}>
                 <View style={styles.logo}>
-                    <Icons.Logo width={250} height={250} />
+                    <Icons.LogoIcon width={250} height={250} />
                 </View>
                 <Text style={styles.heading}>Log in</Text>
                 <CustomTextInput

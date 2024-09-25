@@ -1,8 +1,10 @@
 import PhotoIcon from '../../assets/icons/photoIcon.svg'
-import Logo from '../../assets/icons/roadhelprLogoIcon.svg'
+import LogoIcon from '../../assets/icons/roadhelprLogoIcon.svg'
+import MapMarkerIcon from '../../assets/icons/mapMarkerIcon.svg'
 export const Icons = {
     PhotoIcon,
-    Logo,
+    LogoIcon,
+    MapMarkerIcon,
 }
 
 // export default Icons

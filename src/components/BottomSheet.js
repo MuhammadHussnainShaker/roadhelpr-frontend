@@ -9,7 +9,7 @@ import AppButton from './AppButton'
 import { LAYOUT } from '../constants/layout'
 import { COLORS } from '../constants/colors'
 
-const BottomSheet = ({ isSelectingLocation, handlePickupLocation }) => {
+const BottomSheet = ({ isSelectingLocation, handleSelectPickupLocation }) => {
     const bottomSheetModalRef = useRef(null)
 
     const snapPoints = useMemo(() => ['8%', '100%'], [])
@@ -35,22 +35,23 @@ const BottomSheet = ({ isSelectingLocation, handlePickupLocation }) => {
                                 <Text style={styles.text}>Services</Text>
                                 <AppButton
                                     title={'Puncture Fix'}
-                                    onPress={handlePickupLocation}
+                                    onPress={handleSelectPickupLocation}
                                 />
                             </>
                         ) : (
                             <>
                                 <Text style={styles.text}>Pickup Location</Text>
                                 <Text style={styles.description}>
-                                    Move pin to set the location
+                                    Tap on the map or drag the pin to set the
+                                    location
                                 </Text>
                                 <AppButton
                                     title={'Confirm Pickup Location'}
-                                    // onPress={handlePickLocation}
+                                    // onPress={handleConfirmPickupLocation}
                                 />
                                 <AppButton
                                     title={'Cancel'}
-                                    onPress={handlePickupLocation}
+                                    onPress={handleSelectPickupLocation}
                                     backgroundColor={COLORS.error}
                                 />
                             </>
