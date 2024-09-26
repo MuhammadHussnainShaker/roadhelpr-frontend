@@ -18,6 +18,7 @@ const BottomSheet = ({ isSelectingLocation, handleSelectPickupLocation }) => {
         bottomSheetModalRef.current?.present()
     }, [])
 
+
     return (
         <BottomSheetModalProvider>
             <View>

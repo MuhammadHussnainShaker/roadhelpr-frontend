@@ -6,7 +6,6 @@ import AppButton from '../components/AppButton'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import BottomSheet from '../components/BottomSheet'
-import { Icons } from '../constants/icons'
 
 const Home = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -14,11 +13,11 @@ const Home = () => {
 
     const accessToken = useSelector((state) => state.auth?.accessTokeni)
 
+    const navigation = useNavigation()
+
     const handleSelectPickupLocation = useCallback(() => {
         setIsSelectingLocation((previousValue) => !previousValue)
     }, [])
-
-    const navigation = useNavigation()
 
     useEffect(() => {
         if (accessToken) {
@@ -43,11 +42,6 @@ const Home = () => {
                 isSelectingLocation={isSelectingLocation}
                 handleSelectPickupLocation={handleSelectPickupLocation}
             />
-            {/* {isSelectingLocation && (
-                <View style={styles.marker}>
-                    <Icons.MapMarkerIcon width={40} height={40} />
-                </View>
-            )} */}
             <BottomSheet
                 isSelectingLocation={isSelectingLocation}
                 handleSelectPickupLocation={handleSelectPickupLocation}
@@ -68,13 +62,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 1,
         top: '-1%',
-        left: '70%',
+        left: '73%',
         width: '25%',
-    },
-    marker: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: [{ translateX: -20 }, { translateY: -38 }],
     },
 })
