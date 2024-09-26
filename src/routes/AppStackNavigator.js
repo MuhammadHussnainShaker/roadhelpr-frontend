@@ -10,7 +10,7 @@ const AppStack = createStackNavigator()
 
 const AppStackNavigator = ({ initialRoute }) => {
     const accessToken = useSelector((state) => state.auth?.accessToken)
-    console.log('AccEssToken: ', accessToken)
+    // console.log('AccEssToken: ', accessToken)
 
     useEffect(() => {
         StatusBar.setBackgroundColor(COLORS.primary)
@@ -18,7 +18,9 @@ const AppStackNavigator = ({ initialRoute }) => {
     }, [])
     return (
         <NavigationContainer>
-            <AppStack.Navigator initialRouteName="Home">
+            <AppStack.Navigator
+                initialRouteName={accessToken ? 'Home' : 'Login'}
+            >
                 <AppStack.Screen
                     name="Welcome"
                     component={SCREENS.Welcome}

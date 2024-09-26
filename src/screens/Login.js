@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { COLORS } from '../constants/colors'
 import AppButton from '../components/AppButton'
@@ -49,10 +49,15 @@ const Login = () => {
         } catch (error) {
             if (error.response) {
                 console.error(
-                    'Registration failed, Status: ',
+                    'Login failed, Status: ',
                     error.response.status,
                     'Response: ',
                     error.response.data,
+                )
+                Alert.alert(
+                    'User ',
+                    'Please enable location permissions to use the map.',
+                    [{ text: 'OK' }],
                 )
             } else if (error.request) {
                 console.error('No response from server: ', error.request)
@@ -72,16 +77,19 @@ const Login = () => {
                 <CustomTextInput
                     placeholder="Email Address"
                     onChangeText={(text) => setEmail(text)}
+                    inputMode="email"
                 />
                 <CustomTextInput
                     placeholder="Phone Number"
                     onChangeText={(text) => setPhoneNumber(text)}
+                    inputMode="tel"
                 />
                 <CustomTextInput
                     placeholder="Password"
                     onChangeText={(text) => {
                         setPassword(text)
                     }}
+                    textContentType="password"
                 />
                 <AppButton title="Login" onPress={submitLoginData} />
             </View>

@@ -2,13 +2,14 @@ import { StyleSheet, TextInput } from 'react-native'
 import React from 'react'
 import { COLORS } from '../constants/colors'
 
-const CustomTextInput = ({ placeholder, onChangeText }) => {
+const CustomTextInput = ({ placeholder, onChangeText, ...props }) => {
     return (
         <TextInput
             style={styles.emailInput}
             placeholder={placeholder}
             placeholderTextColor="#B0B0B0"
             onChangeText={onChangeText}
+            {...props}
         />
     )
 }

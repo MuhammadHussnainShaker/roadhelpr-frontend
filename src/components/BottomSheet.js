@@ -41,13 +41,15 @@ const BottomSheet = ({ isSelectingLocation, handleSelectPickupLocation }) => {
                             </>
                         ) : (
                             <>
-                                <Text style={styles.text}>Pickup Location</Text>
+                                <Text style={styles.text}>
+                                    Service Location
+                                </Text>
                                 <Text style={styles.description}>
                                     Tap on the map or drag the pin to set the
                                     location
                                 </Text>
                                 <AppButton
-                                    title={'Confirm Pickup Location'}
+                                    title={'Confirm Service Location'}
                                     // onPress={handleConfirmPickupLocation}
                                 />
                                 <AppButton

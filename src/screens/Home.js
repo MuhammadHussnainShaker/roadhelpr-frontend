@@ -8,36 +8,36 @@ import { useNavigation } from '@react-navigation/native'
 import BottomSheet from '../components/BottomSheet'
 
 const Home = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [isSelectingLocation, setIsSelectingLocation] = useState(false)
 
-    const accessToken = useSelector((state) => state.auth?.accessTokeni)
+    // const accessToken = useSelector((state) => state.auth?.accessTokeni)
 
-    const navigation = useNavigation()
+    // const navigation = useNavigation()
 
     const handleSelectPickupLocation = useCallback(() => {
         setIsSelectingLocation((previousValue) => !previousValue)
     }, [])
 
-    useEffect(() => {
-        if (accessToken) {
-            setIsLoggedIn(true)
-            console.log('isLoggedIn: ', isLoggedIn)
-        } else {
-            setIsLoggedIn(false)
-        }
-    }, [accessToken])
+    // useEffect(() => {
+    //     if (accessToken) {
+    //         setIsLoggedIn(true)
+    //         console.log('isLoggedIn: ', isLoggedIn)
+    //     } else {
+    //         setIsLoggedIn(false)
+    //     }
+    // }, [accessToken])
 
     return (
         <View style={styles.container}>
-            {!isLoggedIn && (
+            {/* {!isLoggedIn && (
                 <View style={styles.loginBtn}>
                     <AppButton
                         title={'Login'}
                         onPress={() => navigation.navigate('Login')}
                     />
                 </View>
-            )}
+            )} */}
             <MapView
                 isSelectingLocation={isSelectingLocation}
                 handleSelectPickupLocation={handleSelectPickupLocation}
