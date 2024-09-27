@@ -5,12 +5,13 @@ import { SCREENS } from '../constants/screens'
 import { useSelector } from 'react-redux'
 import { StatusBar } from 'react-native'
 import { COLORS } from '../constants/colors'
+import BottomNavigator from './BottomNavigator'
 
 const AppStack = createStackNavigator()
 
 const AppStackNavigator = ({ initialRoute }) => {
     const accessToken = useSelector((state) => state.auth?.accessToken)
-    // console.log('AccEssToken: ', accessToken)
+    // console.log('AccessToken: ', accessToken)
 
     useEffect(() => {
         StatusBar.setBackgroundColor(COLORS.primary)
@@ -19,7 +20,8 @@ const AppStackNavigator = ({ initialRoute }) => {
     return (
         <NavigationContainer>
             <AppStack.Navigator
-                initialRouteName={accessToken ? 'Home' : 'Login'}
+                initialRouteName="Main"
+                // initialRouteName={accessToken ? 'Home' : 'Login'}
             >
                 <AppStack.Screen
                     name="Welcome"
@@ -28,9 +30,10 @@ const AppStackNavigator = ({ initialRoute }) => {
                 />
                 <AppStack.Screen name="Signup" component={SCREENS.Signup} />
                 <AppStack.Screen name="Login" component={SCREENS.Login} />
+
                 <AppStack.Screen
-                    name="Home"
-                    component={SCREENS.Home}
+                    name="Main"
+                    component={BottomNavigator}
                     options={{ headerShown: false }}
                 />
             </AppStack.Navigator>
