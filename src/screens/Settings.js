@@ -3,17 +3,54 @@ import React from 'react'
 import { COLORS } from '../constants/colors'
 import { LAYOUT } from '../constants/layout'
 import AppButton from '../components/AppButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { removeTokens } from '../store/slices/authSlice'
+import axios from 'axios'
+import { IP_ADDRESS } from '../constants/Constants'
 
 const Settings = () => {
+    const accessToken = useSelector((state) => state.auth?.accessToken)
+    console.log('AccessToken: ', accessToken)
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
-    const handleLogout = () => {
-        dispatch(removeTokens())
-        navigation.replace('Login')
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post(
+                `${IP_ADDRESS}/api/v1/users/logout`,
+                {},
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    timeout: 10000,
+                },
+            )
+
+            console.log('User Logged Out Successfully ', response.data.data)
+
+            dispatch(removeTokens())
+            navigation.replace('Login')
+
+            return response.data
+        } catch (error) {
+            if (error.response) {
+                console.error(
+                    'Logout failed, Status: ',
+                    error.response.status,
+                    'Response: ',
+                    error.response.data,
+                )
+            } else if (error.request) {
+                console.error('No response from server: ', error.request)
+            } else {
+                console.error('Error setting up the request: ', error.message)
+            }
+            throw error
+        }
     }
     return (
         <View style={styles.container}>

@@ -25,6 +25,7 @@ const Signup = () => {
     const [phoneNumber, setPhoneNumber] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [role, setRole] = useState('customer')
     const [profileImageUrl, setProfileImageUrl] = useState('')
     const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -36,6 +37,7 @@ const Signup = () => {
         formData.append('phoneNumber', phoneNumber)
         formData.append('email', email)
         formData.append('password', password)
+        formData.append('role', role)
         if (profileImageUrl) {
             console.log(profileImageUrl)
             formData.append('profileImageUrl', {
@@ -60,6 +62,7 @@ const Signup = () => {
             )
 
             console.log('User Registered Successfully ', response.data)
+            navigation.navigate('Login')
             return response.data
         } catch (error) {
             if (error.response) {
@@ -204,17 +207,40 @@ const Signup = () => {
                         setPassword(text)
                     }}
                 />
+                <View style={styles.selectRoleContainer}>
+                    <TouchableOpacity
+                        style={[
+                            styles.selectRoleBtn,
+                            role === 'customer' && styles.selectedRoleBtn,
+                        ]}
+                        onPress={() => setRole('customer')}
+                    >
+                        <Text style={styles.selectRoleBtnTxt}>Customer</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.selectRoleBtn,
+                            role === 'serviceprovider' &&
+                                styles.selectedRoleBtn,
+                        ]}
+                        onPress={() => setRole('serviceprovider')}
+                    >
+                        <Text style={styles.selectRoleBtnTxt}>
+                            Service Provider
+                        </Text>
+                    </TouchableOpacity>
+                </View>
 
                 <AppButton title="Continue" onPress={submitUserData} />
 
                 <TouchableOpacity
                     style={styles.loginLink}
-                    onPress={() => navigation.navigate('Login')}
+                    onPress={() => navigation.replace('Login')}
                 >
                     <Text style={styles.loginTxt}>
                         Already have an account?
                     </Text>
-                    <TextButton title="Login" />
+                    <Text style={styles.loginBtnTxt}> Login</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -237,41 +263,27 @@ const styles = StyleSheet.create({
         fontSize: LAYOUT.fontSizeExtraLarge,
         color: COLORS.primary,
     },
-    // fullnameInput: {
-    //     marginTop: 24,
-    //     borderBottomWidth: 1,
-    //     borderColor: '#2C2C2C',
-    //     fontWeight: '600',
-    // },
-    // usernameInput: {
-    //     marginTop: 24,
-    //     borderBottomWidth: 1,
-    //     borderColor: '#2C2C2C',
-    //     fontWeight: '600',
-    // },
-    // emailInput: {
-    //     marginTop: 12,
-    //     borderBottomWidth: 1,
-    //     borderColor: '#2C2C2C',
-    //     fontWeight: '600',
-    // },
-    // pwInput: {
-    //     marginTop: 12,
-    //     borderBottomWidth: 1,
-    //     borderColor: '#2C2C2C',
-    //     fontWeight: '600',
-    // },
-    // continueBtn: {
-    //     marginTop: 24,
-    //     backgroundColor: '#1A5319',
-    //     padding: 12,
-    //     alignItems: 'center',
-    // },
-    // continueBtnTxt: {
-    //     color: '#E0E0E0',
-    //     width: '18%', // ASK
-    // },
-
+    selectRoleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+    },
+    selectRoleBtn: {
+        marginTop: 24,
+        backgroundColor: COLORS.primary,
+        width: '40%',
+        padding: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 50,
+    },
+    selectedRoleBtn: {
+        backgroundColor: COLORS.accent,
+    },
+    selectRoleBtnTxt: {
+        color: COLORS.neutralGrey,
+        textAlign: 'center',
+    },
     loginLink: {
         marginTop: 24,
         flexDirection: 'row',
@@ -280,6 +292,9 @@ const styles = StyleSheet.create({
     loginTxt: {
         color: COLORS.textPrimary,
     },
+    loginBtnTxt: {
+        color: COLORS.primary,
+    },
     imagePickerBtn: {
         marginTop: LAYOUT.marginMedium,
         alignSelf: 'center',
@@ -287,7 +302,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '26%',
-        height: '16%',
+        height: '14.5%',
         borderRadius: LAYOUT.borderRadiusRounded,
         overflow: 'hidden',
     },

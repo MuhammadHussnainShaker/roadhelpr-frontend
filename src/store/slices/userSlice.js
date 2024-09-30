@@ -1,25 +1,26 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const initialState = {
-    users: [
-        {
-            id: '66dfee910c5787f75c428cd5',
-            fullName: 'Muhammad Hussnain Shaker',
-            phoneNumber: '3038613251',
-            email: 'mhussnainshaker@gmail.com',
-            role: 'customer',
-            profileImageUrl:
-                'http://res.cloudinary.com/dpor350rk/image/upload/v1725951633/vgxzn5h9lsx1bjjrr6y6.png',
-            createdAt: '2023-01-08T04:07:13.869Z',
-            updatedAt: '2023-01-08T04:43:48.625Z',
-        },
-    ],
+    users: [],
 }
 
 const userSlice = createSlice({
     name: 'user',
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        setUser: (state, action) => {
+            state.users.push(action.payload)
+        },
+        deleteUser: (state, action) => {
+            state.users = state.users.filter(
+                (user) => user.id !== action.payload,
+            )
+        },
+    },
 })
 
+export const { setUser, deleteUser } = userSlice.actions
+
 export default userSlice.reducer
+

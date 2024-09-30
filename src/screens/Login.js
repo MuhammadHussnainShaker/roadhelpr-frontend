@@ -43,7 +43,7 @@ const Login = () => {
             const { accessToken, refreshToken } = response.data.data
             dispatch(storeTokens(accessToken, refreshToken))
 
-            navigation.replace('Home')
+            navigation.replace('Main')
 
             return response.data
         } catch (error) {

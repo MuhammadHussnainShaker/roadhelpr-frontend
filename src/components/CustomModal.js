@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: COLORS.tertiary,
+        backgroundColor: COLORS.primaryBackground,
     },
     subContainer: {
         borderTopLeftRadius: 50,

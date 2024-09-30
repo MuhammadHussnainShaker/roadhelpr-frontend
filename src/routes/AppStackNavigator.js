@@ -20,8 +20,7 @@ const AppStackNavigator = ({ initialRoute }) => {
     return (
         <NavigationContainer>
             <AppStack.Navigator
-                initialRouteName="Main"
-                // initialRouteName={accessToken ? 'Home' : 'Login'}
+                initialRouteName={accessToken ? 'Main' : 'Welcome'}
             >
                 <AppStack.Screen
                     name="Welcome"
@@ -30,7 +29,6 @@ const AppStackNavigator = ({ initialRoute }) => {
                 />
                 <AppStack.Screen name="Signup" component={SCREENS.Signup} />
                 <AppStack.Screen name="Login" component={SCREENS.Login} />
-
                 <AppStack.Screen
                     name="Main"
                     component={BottomNavigator}

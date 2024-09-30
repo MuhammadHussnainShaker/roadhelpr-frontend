@@ -1,8 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import { SCREENS } from '../constants/screens'
+import { COLORS } from '../constants/colors'
+import { Icons } from '../constants/icons'
 
 const Tab = createBottomTabNavigator()
 
@@ -10,49 +10,63 @@ const BottomNavigator = () => {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                    let iconName
-
-                    // Set the FontAwesome icons based on the screen name
-                    if (route.name === 'Home') {
-                        iconName = focused ? 'home' : 'home' // FontAwesome doesn't have a separate "outline" variant for some icons
-                    } else if (route.name === 'Chat') {
-                        iconName = focused ? 'comments' : 'comments'
-                    } else if (route.name === 'Requests') {
-                        iconName = focused ? 'list' : 'list'
-                    } else if (route.name === 'Settings') {
-                        iconName = focused ? 'cog' : 'cog' // 'cog' for settings
-                    }
-
-                    // Return the FontAwesome Icon component
-                    return (
-                        <FontAwesome
-                            name={iconName}
-                            size={size}
-                            color={color}
-                        />
-                    )
+                tabBarStyle: {
+                    backgroundColor: COLORS.primary,
                 },
-                tabBarActiveTintColor: 'tomato', // Active tab color
-                tabBarInactiveTintColor: 'gray', // Inactive tab color
+                tabBarActiveTintColor: 'tomato',
+                tabBarInactiveTintColor: 'gray',
+                tabBarShowLabel: false,
+                tabBarIcon: ({ focused, color, size }) => {
+                    if (route.name === 'Home') {
+                        return (
+                            <Icons.HomeIcon
+                                width={24}
+                                height={24}
+                                color={focused ? COLORS.error : COLORS.tertiary}
+                            />
+                        )
+                    } else if (route.name === 'Requests') {
+                        return <Icons.ListIcon width={24} height={24} />
+                    } else if (route.name === 'Chat') {
+                        return <Icons.ChatIcon width={24} height={24} />
+                    } else if (route.name === 'Settings') {
+                        return <Icons.SettingsIcon width={24} height={24} />
+                    }
+                    return null
+                },
             })}
         >
             <Tab.Screen
                 name="Home"
                 component={SCREENS.Home}
-                options={{ headerShown: false }}
-            />
-            <Tab.Screen
-                name="Chat"
-                component={SCREENS.Chat}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    tabBarActiveBackgroundColor: COLORS.accent,
+                }}
             />
             <Tab.Screen
                 name="Requests"
                 component={SCREENS.Requests}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    tabBarActiveBackgroundColor: COLORS.accent,
+                }}
             />
-            <Tab.Screen name="Settings" component={SCREENS.Settings} />
+            <Tab.Screen
+                name="Chat"
+                component={SCREENS.Chat}
+                options={{
+                    headerShown: false,
+                    tabBarActiveBackgroundColor: COLORS.accent,
+                }}
+            />
+            <Tab.Screen
+                name="Settings"
+                component={SCREENS.Settings}
+                options={{
+                    tabBarActiveBackgroundColor: COLORS.accent,
+                }}
+            />
         </Tab.Navigator>
     )
 }

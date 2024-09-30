@@ -30,14 +30,6 @@ const Home = () => {
 
     return (
         <View style={styles.container}>
-            {/* {!isLoggedIn && (
-                <View style={styles.loginBtn}>
-                    <AppButton
-                        title={'Login'}
-                        onPress={() => navigation.navigate('Login')}
-                    />
-                </View>
-            )} */}
             <MapView
                 isSelectingLocation={isSelectingLocation}
                 handleSelectPickupLocation={handleSelectPickupLocation}
