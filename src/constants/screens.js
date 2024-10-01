@@ -5,6 +5,7 @@ import Home from '../screens/Home'
 import Requests from '../screens/Requests'
 import Chat from '../screens/Chat'
 import Settings from '../screens/Settings'
+import ServiceProviderHome from '../screens/serviceproviderscreens/ServiceProviderHome'
 
 export const SCREENS = {
     Welcome: Welcome,
@@ -14,4 +15,5 @@ export const SCREENS = {
     Requests: Requests,
     Chat: Chat,
     Settings: Settings,
+    ServiceProviderHome: ServiceProviderHome,
 }

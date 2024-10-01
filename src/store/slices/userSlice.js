@@ -1,5 +1,4 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const initialState = {
     users: [],
@@ -14,7 +13,7 @@ const userSlice = createSlice({
         },
         deleteUser: (state, action) => {
             state.users = state.users.filter(
-                (user) => user.id !== action.payload,
+                (user) => user._id !== action.payload,
             )
         },
     },
@@ -23,4 +22,3 @@ const userSlice = createSlice({
 export const { setUser, deleteUser } = userSlice.actions
 
 export default userSlice.reducer
-

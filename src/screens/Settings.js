@@ -8,10 +8,12 @@ import { useNavigation } from '@react-navigation/native'
 import { removeTokens } from '../store/slices/authSlice'
 import axios from 'axios'
 import { IP_ADDRESS } from '../constants/Constants'
+import { deleteUser } from '../store/slices/userSlice'
 
 const Settings = () => {
+    const users = useSelector((state) => state.user.users)
     const accessToken = useSelector((state) => state.auth?.accessToken)
-    console.log('AccessToken: ', accessToken)
+
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
@@ -30,9 +32,10 @@ const Settings = () => {
                 },
             )
 
-            console.log('User Logged Out Successfully ', response.data.data)
+            // console.log('User Logged Out Successfully ')
 
             dispatch(removeTokens())
+            dispatch(deleteUser(users[0]._id))
             navigation.replace('Login')
 
             return response.data

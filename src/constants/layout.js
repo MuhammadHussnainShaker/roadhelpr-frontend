@@ -1,8 +1,8 @@
 export const LAYOUT = {
     // Spacing
-    paddingSmall: 12,
-    paddingMedium: 24,
-    paddingLarge: 36,
+    paddingSmall: 6,
+    paddingMedium: 12,
+    paddingLarge: 24,
     marginSmall: 12,
     marginMedium: 24,
     marginLarge: 36,

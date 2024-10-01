@@ -6,6 +6,7 @@ import HomeIcon from '../../assets/icons/homeIcon.svg'
 import ListIcon from '../../assets/icons/listIcon.svg'
 import ChatIcon from '../../assets/icons/chatIcon.svg'
 import SettingsIcon from '../../assets/icons/settingsIcon.svg'
+import SendIcon from '../../assets/icons/sendIcon.svg'
 
 export const Icons = {
     PhotoIcon,
@@ -16,6 +17,7 @@ export const Icons = {
     ListIcon,
     ChatIcon,
     SettingsIcon,
+    SendIcon,
 }
 
 // export default Icons

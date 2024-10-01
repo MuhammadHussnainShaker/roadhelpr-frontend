@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     View,
     Modal,
+    Alert,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -46,7 +47,6 @@ const Signup = () => {
                 type: 'image/jpeg',
             })
         }
-        console.log(formData)
 
         try {
             const response = await axios.post(
@@ -61,7 +61,7 @@ const Signup = () => {
                 },
             )
 
-            console.log('User Registered Successfully ', response.data)
+            // console.log('User Registered Successfully ', response.data)
             navigation.navigate('Login')
             return response.data
         } catch (error) {
@@ -72,40 +72,29 @@ const Signup = () => {
                     'Response: ',
                     error.response.data,
                 )
+                Alert.alert(
+                    'Signup Failed',
+                    'Please make sure to enter valid signup details.',
+                    [{ text: 'OK' }],
+                )
             } else if (error.request) {
                 console.error('No response from server: ', error.request)
+                Alert.alert(
+                    'No response received from server',
+                    'Please try again later.',
+                    [{ text: 'OK' }],
+                )
             } else {
                 console.error('Error setting up the request: ', error.message)
+                Alert.alert(
+                    'Error setting up the request',
+                    'Please try again.',
+                    [{ text: 'OK' }],
+                )
             }
             throw error
         }
     }
-
-    fetchData = async () => {
-        try {
-            const response = await axios.get(`${IP_ADDRESS}/api`)
-            console.log(new Date().toLocaleTimeString(), ' ', response.data)
-        } catch (error) {
-            console.error('Error fetching data: ', error)
-            if (error.response) {
-                console.log(
-                    'Server responded with a status code:',
-                    error.response.status,
-                )
-            } else if (error.request) {
-                console.log(
-                    'Request was made but no response was received:',
-                    error.request,
-                )
-            } else {
-                console.log('Error setting up the request:', error.message)
-            }
-        }
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
 
     const imagePickerOptions = {
         mediaType: 'photo',
@@ -206,6 +195,7 @@ const Signup = () => {
                     onChangeText={(text) => {
                         setPassword(text)
                     }}
+                    textContentType="password"
                 />
                 <View style={styles.selectRoleContainer}>
                     <TouchableOpacity
