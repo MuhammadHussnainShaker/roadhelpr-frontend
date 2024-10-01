@@ -86,10 +86,11 @@ const BottomNavigator = () => {
                 screenOptions={({ route }) => ({
                     tabBarStyle: {
                         backgroundColor: COLORS.primary,
+                        height: 70,
                     },
-                    tabBarActiveTintColor: 'tomato',
-                    tabBarInactiveTintColor: 'gray',
-                    tabBarShowLabel: false,
+                    // tabBarActiveTintColor: 'tomato',
+                    // tabBarInactiveTintColor: 'gray',
+                    // tabBarShowLabel: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         if (
                             route.name === 'Home' ||
@@ -119,6 +120,8 @@ const BottomNavigator = () => {
                     name="ServiceProviderHome"
                     component={SCREENS.ServiceProviderHome}
                     options={{
+                        tabBarLabel: 'Home',
+                        tabBarLabelStyle: { fontSize: 16, color: '#FFFFFF' },
                         tabBarActiveBackgroundColor: COLORS.accent,
                         headerTitle: () => <CustomHeader name="RoadHelpr" />,
                         headerTitleAlign: 'center',
@@ -137,6 +140,8 @@ const BottomNavigator = () => {
                     name="Requests"
                     component={SCREENS.Requests}
                     options={{
+                        tabBarLabel: 'Requests',
+                        tabBarLabelStyle: { fontSize: 16, color: '#FFFFFF' },
                         headerShown: false,
                         tabBarActiveBackgroundColor: COLORS.accent,
                     }}
@@ -145,6 +150,7 @@ const BottomNavigator = () => {
                     name="Chat"
                     component={SCREENS.Chat}
                     options={{
+                        tabBarLabelStyle: { fontSize: 16, color: '#FFFFFF' },
                         headerShown: false,
                         tabBarActiveBackgroundColor: COLORS.accent,
                     }}
@@ -153,6 +159,7 @@ const BottomNavigator = () => {
                     name="Settings"
                     component={SCREENS.Settings}
                     options={{
+                        tabBarLabelStyle: { fontSize: 16, color: '#FFFFFF' },
                         tabBarActiveBackgroundColor: COLORS.accent,
                     }}
                 />
