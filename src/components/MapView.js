@@ -67,6 +67,7 @@ const MapView = ({
         const newCoords = e.geometry.coordinates
         if (isSelectingLocation) {
             setPinLocation(newCoords)
+            handleUpdateServiceLocation(newCoords)
         }
     }
 

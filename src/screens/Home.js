@@ -1,17 +1,26 @@
 import { View, StyleSheet } from 'react-native'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { COLORS } from '../constants/colors'
 import MapView from '../components/MapView'
-import AppButton from '../components/AppButton'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import BottomSheet from '../components/BottomSheet'
 import axios from 'axios'
 import { IP_ADDRESS } from '../constants/Constants'
+import { setRequest } from '../store/slices/requestSlice'
+import PushNotification from 'react-native-push-notification'
+import Payment from './Payment'
+import CustomModal from '../components/CustomModal'
+import { StripeProvider } from '@stripe/stripe-react-native'
+import { STRIPE_PUBLISHABLE_KEY } from '../../secrets'
 
 const Home = () => {
+    const [isModalVisible, setIsModalVisible] = useState(false)
     const [isSelectingLocation, setIsSelectingLocation] = useState(false)
-    const [serviceLocation, setServiceLocation] = useState(null)
+    const [serviceLocation, setServiceLocation] = useState([])
+
+    const navigation = useNavigation()
+    const dispatch = useDispatch()
 
     const handleSelectPickupLocation = useCallback(() => {
         setIsSelectingLocation((previousValue) => !previousValue)
@@ -22,6 +31,19 @@ const Home = () => {
     }
 
     const handleConfirmServiceLocation = async () => {
+        setIsModalVisible(true)
+    }
+
+    const handleConfirmPayment = async () => {
+        console.log('Confrim payment handled')
+        setIsModalVisible(false)
+
+        // PushNotification.localNotification({
+        //     channelId: 'service-request-channel',
+        //     title: 'Service Request Made Successfully',
+        //     message:
+        //         'Service Request has been made. Please wait while some service provider accepts your service request',
+        // })
         setIsSelectingLocation((previousValue) => !previousValue)
 
         const serviceRequestData = {
@@ -29,7 +51,6 @@ const Home = () => {
             latitude: serviceLocation[1],
         }
 
-        // send service request data to backend
         try {
             const response = await axios.post(
                 `${IP_ADDRESS}/api/v1/service/create-service-request`,
@@ -43,9 +64,14 @@ const Home = () => {
                 },
             )
 
-            // console.log('User Logged In Successfully ', response.data.data)
+            console.log(
+                'Service Request made Successfully ',
+                response.data.data,
+            )
 
-            // navigation.replace('Main')
+            dispatch(setRequest(response.data.data))
+
+            navigation.navigate('Requests')
 
             return response.data
         } catch (error) {
@@ -77,21 +103,29 @@ const Home = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <MapView
-                isSelectingLocation={isSelectingLocation}
-                handleSelectPickupLocation={handleSelectPickupLocation}
-                serviceLocation={serviceLocation}
-                handleUpdateServiceLocation={handleUpdateServiceLocation}
-                handleConfirmServiceLocation={handleConfirmServiceLocation}
-            />
-            <BottomSheet
-                isSelectingLocation={isSelectingLocation}
-                handleSelectPickupLocation={handleSelectPickupLocation}
-                serviceLocation={serviceLocation}
-                handleConfirmServiceLocation={handleConfirmServiceLocation}
-            />
-        </View>
+        <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
+            <View style={styles.container}>
+                <MapView
+                    isSelectingLocation={isSelectingLocation}
+                    handleSelectPickupLocation={handleSelectPickupLocation}
+                    serviceLocation={serviceLocation}
+                    handleUpdateServiceLocation={handleUpdateServiceLocation}
+                    handleConfirmServiceLocation={handleConfirmServiceLocation}
+                />
+                <BottomSheet
+                    isSelectingLocation={isSelectingLocation}
+                    handleSelectPickupLocation={handleSelectPickupLocation}
+                    serviceLocation={serviceLocation}
+                    handleConfirmServiceLocation={handleConfirmServiceLocation}
+                />
+                <CustomModal
+                    visible={isModalVisible}
+                    onRequestClose={() => setIsModalVisible(false)}
+                >
+                    <Payment handleConfirmPayment={handleConfirmPayment} />
+                </CustomModal>
+            </View>
+        </StripeProvider>
     )
 }
 

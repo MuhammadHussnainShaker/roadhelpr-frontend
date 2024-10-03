@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text, Alert, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { COLORS } from '../constants/colors'
 import AppButton from '../components/AppButton'
 import { LAYOUT } from '../constants/layout'
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { storeTokens } from '../store/slices/authSlice'
 import { useNavigation } from '@react-navigation/native'
 import { setUser } from '../store/slices/userSlice'
+import PushNotification from 'react-native-push-notification'
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -19,6 +20,18 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [role, setRole] = useState('customer')
+
+    // const createChannels = () => {
+    //     PushNotification.createChannel({
+    //         channelId: 'service-request-channel',
+    //         channelName: 'Service Request Channel',
+    //     })
+    //     console.log('Channel Created Successfully')
+    // }
+
+    // useEffect(() => {
+    //     createChannels()
+    // }, [])
 
     const submitLoginData = async () => {
         const userData = {
@@ -85,8 +98,6 @@ const Login = () => {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                {' '}
-                // Todo: deleteit
                 <View style={styles.logo}>
                     <Icons.LogoIcon width={250} height={250} />
                 </View>
