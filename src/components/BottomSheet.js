@@ -9,7 +9,12 @@ import AppButton from './AppButton'
 import { LAYOUT } from '../constants/layout'
 import { COLORS } from '../constants/colors'
 
-const BottomSheet = ({ isSelectingLocation, handleSelectPickupLocation }) => {
+const BottomSheet = ({
+    isSelectingLocation,
+    handleSelectPickupLocation,
+    serviceLocation,
+    handleConfirmServiceLocation,
+}) => {
     const bottomSheetModalRef = useRef(null)
 
     const snapPoints = useMemo(() => ['8%', '100%'], [])
@@ -17,7 +22,6 @@ const BottomSheet = ({ isSelectingLocation, handleSelectPickupLocation }) => {
     useEffect(() => {
         bottomSheetModalRef.current?.present()
     }, [])
-
 
     return (
         <BottomSheetModalProvider>
@@ -50,7 +54,7 @@ const BottomSheet = ({ isSelectingLocation, handleSelectPickupLocation }) => {
                                 </Text>
                                 <AppButton
                                     title={'Confirm Service Location'}
-                                    // onPress={handleConfirmPickupLocation}
+                                    onPress={handleConfirmServiceLocation}
                                 />
                                 <AppButton
                                     title={'Cancel'}

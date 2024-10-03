@@ -10,7 +10,13 @@ MapboxGL.setAccessToken(
     'pk.eyJ1IjoibXVoYW1tYWRodXNzbmFpbnNoYWtlciIsImEiOiJjbTE4dm50YmoxM3d6MmpzOGo3M293enRzIn0.Fa4g2b1_HiklPF4shDnmpQ',
 )
 
-const MapView = ({ isSelectingLocation, handleSelectPickupLocation }) => {
+const MapView = ({
+    isSelectingLocation,
+    handleSelectPickupLocation,
+    serviceLocation,
+    handleUpdateServiceLocation,
+    handleConfirmServiceLocation,
+}) => {
     const [hasLocationPermission, setHasLocationPermission] = useState(false)
     const [loading, setLoading] = useState(true)
     const [userLocation, setUserLocation] = useState(null)
@@ -67,6 +73,10 @@ const MapView = ({ isSelectingLocation, handleSelectPickupLocation }) => {
     const handleUserLocationPress = () => {
         if (isSelectingLocation) {
             setPinLocation([userLocation.longitude, userLocation.latitude])
+            handleUpdateServiceLocation([
+                userLocation.longitude,
+                userLocation.latitude,
+            ])
         }
     }
 
@@ -129,6 +139,7 @@ const MapView = ({ isSelectingLocation, handleSelectPickupLocation }) => {
                         onDragEnd={(e) => {
                             const newCoords = e.geometry.coordinates
                             setPinLocation(newCoords)
+                            handleUpdateServiceLocation(newCoords)
                         }}
                     />
                 )}
