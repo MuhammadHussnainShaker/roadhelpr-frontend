@@ -39,6 +39,10 @@ target 'roadhelpr' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pre_install do |installer|
+  $RNMapboxMaps.pre_install(installer)
+  end
+
   target 'roadhelprTests' do
     inherit! :complete
     # Pods for testing
@@ -51,5 +55,20 @@ target 'roadhelpr' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
+    $RNMapboxMaps.post_install(installer)
   end
 end
+
+# Copied from https://rnmapbox.github.io/docs/install
+# // highlight-start
+# pre_install do |installer|
+#   $RNMapboxMaps.pre_install(installer)
+# end
+# // highlight-end
+
+# post_install do |installer|
+# // highlight-start
+#   $RNMapboxMaps.post_install(installer)
+# // highlight-end
+#   # ... other post install hooks
+# end
